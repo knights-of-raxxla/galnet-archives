@@ -1,0 +1,36 @@
+version: '2'
+networks:
+  local:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 172.122.0.0/24
+services:
+    express:
+        build: ./expressjs
+        tty: true
+
+        volumes:
+        - ~/Documents/projects/perso/galnet-archives/:/var/www/galnet-archives
+        ports:
+        - "80:80"
+
+        links:
+        - mysql
+        networks:
+            local:
+                ipv4_address: 172.122.0.102
+    mysql:
+        networks:
+            local:
+                ipv4_address: 172.122.0.104
+        build: ./mysql
+        volumes:
+        - ~/docker-data/galnet-archives/mysql:/var/lib/mysql/:rw
+        environment:
+        - MYSQL_DATABASE=galnet_archives
+        - MYSQL_ROOT_PASSWORD=poiuyt42
+        - MYSQL_USER=galnet
+        - MYSQL_PASSWORD=poiuyt42
+        ports:
+        - "3306:3306"
