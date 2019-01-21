@@ -31,7 +31,7 @@ module.exports = {
     }
 };
 ```
-Fire up docker-compose
+With docker
 ```bash
 cd deploy
 docker-compose up -d
@@ -41,6 +41,18 @@ docker ps
 docker exec -it {container id} bash
 # inside docker container :
 cd /var/www/galnet-archives
+npm install
+npm install -g knex
+knex migrate:latest
+node scripts/seed.js
+```
+
+Docker-less
+```
+# in sql
+create database galnet;
+alter database galnet  character set utf8 collate utf8_general_ci;
+# in project
 npm install
 npm install -g knex
 knex migrate:latest

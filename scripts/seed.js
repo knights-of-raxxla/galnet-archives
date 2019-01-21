@@ -35,7 +35,7 @@ return knex('articles')
             last_irl_date = rows[0].date;
         let dates = generateDateArr(last_irl_date);
         return async.eachLimit(dates, 10, date => {
-            if (dates.indexOf(date) % 100 === 0) console.log(date);
+            if (dates.indexOf(date) % 100 === 0) console.log('fetched galnet articles up to :', date);
             return scrapper.dailyArticles(date)
                 .then(out => {
                     if (!out || !out.data || !out.date.length) return;
@@ -44,6 +44,9 @@ return knex('articles')
                         o.date = date;
                         o.created_at = new Date();
                         o.date = date;
+                        if (o.content.match(/[\\]/g)) {
+                            console.log({o});
+                        }
                         ins.push(o);
                     });
                     return knex('articles').insert(ins);
@@ -52,5 +55,9 @@ return knex('articles')
     }).then(() => {
         console.log('done');
         process.exit(0);
+    }).catch(err => {
+        console.log({err});
+        console.log('errored');
+        process.exit(1);
     });
 

@@ -4,9 +4,9 @@ exports.up = function(knex, Promise) {
         knex.schema.createTable('articles', function(t) {
             t.increments('id');
             t.date('date');
-            t.date('date_ed');
+            t.string('date_ed');
             t.text('title');
-            t.text('content');
+            t.text('content', 'longtext');
             t.string('link');
             t.date('created_at');
         })

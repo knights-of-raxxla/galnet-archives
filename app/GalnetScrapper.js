@@ -55,6 +55,7 @@ module.exports = class GalnetScrapper {
             let title = $(link_item).text();
             let link = $domain + $(link_item).attr('href');
             let content = $(article).find('p').text();
+            content = content.trim().replace('\\', '/');
             let date_ed = $(article).find('.i_right').text();
             let href = $(article).find('.gal')
             o.push({
